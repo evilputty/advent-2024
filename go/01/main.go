@@ -3,7 +3,9 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -13,6 +15,11 @@ func main() {
 	// split from "   "
 	// convert to integers and sort numerically
 	// add difference of lowest integers for each line consecutively for answer
+	var left = make([]int, 0)
+	var right = make([]int, 0)
+	var answer int = 0
+
+	counter := 0
 
 	file, err := os.Open("input_data.txt")
 	if err != nil {
@@ -22,23 +29,48 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		fmt.Println(scanner.Text())
-		get_answer(strings.Split(scanner.Text(), "   "))
+		counter++
+		nums := strings.Split(scanner.Text(), "   ")
+		for i, value := range nums {
+			//fmt.Printf("[%v] %v\n", i, value)
+			if i == 0 {
+				left = strToIntSorted(value)
+			} else {
+				right = strToIntSorted(value)
+			}
+		}
+		fmt.Printf("Current: %v\n", answer)
+		answer += getDifferenceIntSlice(left, right)
 	}
+	fmt.Println("Answer: ", answer)
+	fmt.Printf("Processed %v Lines\n", counter)
 }
 
-func get_answer(line []string) int {
-	// split the string data coming in like "12345   12345"
-	for i, line := range line{
-		num, err := strconv.Atoi(line)
-		if err != nil {}
-			fmt.Println("Error Converting to integer", err)
+func strToIntSorted(str string) []int {
+	var answer = make([]int, 0)
+	num := strings.Split(str, "")
+	for _, value := range num {
+		nums, err := strconv.Atoi(value)
+		if err != nil {
+			fmt.Println("error converting to int", err)
 			continue
 		}
-		nums[i] = num
+		answer = append(answer, nums)
 	}
+	return answer
+}
 
-	
-	var answer int // placeholder
+func getDifferenceIntSlice(num1 []int, num2 []int) int {
+	// sort slices into ascending order
+	sort.Ints(num1)
+	sort.Ints(num2)
+
+	var answer int = 0
+
+	for i := range num1 {
+		answer += int(math.Abs(float64(num1[i] - num2[i])))
+		//fmt.Printf("Num1:%v - Num2:%v\n", num1[i], num2[i])
+	}
+	fmt.Println("Line Answer: ", answer)
 	return answer
 }
