@@ -8,6 +8,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	//"common/input_data"
 )
 
 func main() {
@@ -48,7 +49,14 @@ func main() {
 	}
 	fmt.Printf("Processed %v Lines\n", counter)
 	answer = getDifferenceIntSlice(left, right)
-	fmt.Println("Answer: ", answer)
+	fmt.Println("Part 1 Answer: ", answer)
+
+	answer2 := 0
+
+	for _, value := range left {
+		answer2 += (value * heatMap(right, value))
+	}
+	fmt.Println("Part 2 Answer: ", answer2)
 }
 
 func getDifferenceIntSlice(num1 []int, num2 []int) int {
@@ -62,4 +70,14 @@ func getDifferenceIntSlice(num1 []int, num2 []int) int {
 		answer += int(math.Abs(float64(num1[i] - num2[i])))
 	}
 	return answer
+}
+
+func heatMap(slice []int, cmp int) int {
+	count := 0
+	for _, value := range slice {
+		if value == cmp {
+			count++
+		}
+	}
+	return count
 }
