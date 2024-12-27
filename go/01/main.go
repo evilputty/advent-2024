@@ -11,14 +11,17 @@ import (
 	//"common/input_data"
 )
 
+const INPUT_LINES int = 1000
+
 func main() {
 	// pull data from input file
 	// split from "   "
 	// convert to integers and sort numerically
 	// add difference of lowest integers for each line consecutively for answer
-	var left = make([]int, 0)
-	var right = make([]int, 0)
+	var left = make([]int, INPUT_LINES)
+	var right = make([]int, INPUT_LINES)
 	var answer int = 0
+	var answer2 int = 0
 
 	counter := 0
 
@@ -47,23 +50,30 @@ func main() {
 			}
 		}
 	}
-	fmt.Printf("Processed %v Lines\n", counter)
+
+	// sort before we do any funny biz
+	sort.Ints(left)
+	sort.Ints(right)
+
 	answer = getDifferenceIntSlice(left, right)
 	fmt.Println("Part 1 Answer: ", answer)
 
+<<<<<<< HEAD
 	answer2 := 0
 
 	for _, value := range left {
 		answer2 += (value * heatMap(right, value))
 	}
+=======
+	for _, v := range left {
+		answer2 += (v * getHits(right, v))
+	}
+
+>>>>>>> 2b2947bba74578fea7217a336f27b4920d084998
 	fmt.Println("Part 2 Answer: ", answer2)
 }
 
 func getDifferenceIntSlice(num1 []int, num2 []int) int {
-	// sort slices into ascending order
-	sort.Ints(num1)
-	sort.Ints(num2)
-
 	var answer int = 0
 
 	for i := range num1 {
@@ -72,12 +82,22 @@ func getDifferenceIntSlice(num1 []int, num2 []int) int {
 	return answer
 }
 
+<<<<<<< HEAD
 func heatMap(slice []int, cmp int) int {
+=======
+func getHits(slice []int, cmp int) int {
+>>>>>>> 2b2947bba74578fea7217a336f27b4920d084998
 	count := 0
 	for _, value := range slice {
 		if value == cmp {
 			count++
 		}
+<<<<<<< HEAD
+=======
+		if value > cmp {
+			break
+		}
+>>>>>>> 2b2947bba74578fea7217a336f27b4920d084998
 	}
 	return count
 }
